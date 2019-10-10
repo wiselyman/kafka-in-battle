@@ -97,14 +97,14 @@ kubectl exec -n kafka my-cluster-kafka-0   -- bin/kafka-topics.sh --list --zooke
 
 - 下载PostgeSQL plugin：http://central.maven.org/maven2/io/debezium/debezium-connector-postgres/
 
-- 新建Dockerfile
+- 新建Dockerfile文件。
 
 - 解压两个压缩包到Dockerfile相同目录下的plugins目录：`debezium-connector-sqlserver-0.10.0.Final-plugin.zip`、`debezium-connector-postgres-0.10.0.Final-plugin.zip`
 
 - 编写Dockerfile
 
   ```dockerfile
-  FROM strimzi/kafka-connect:0.14.0-kafka-2.3.0
+  FROM strimzi/kafka:0.14.0-kafka-2.3.0
   USER root:root
   COPY ./plugins/ /opt/kafka/plugins/
   USER 1001
@@ -123,6 +123,6 @@ kubectl exec -n kafka my-cluster-kafka-0   -- bin/kafka-topics.sh --list --zooke
 
   ![](images/aliyun3.png)
 
-- 确认后，“构建规则设置”->“立即构建”：
+- 确认后，“构建规则设置”->“立即构建”，“构建日志”显示“构建状态”为“成功”即可。
 
   

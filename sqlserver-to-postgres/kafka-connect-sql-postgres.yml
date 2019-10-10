@@ -1,0 +1,13 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+spec:
+  version: 2.3.0
+  replicas: 1
+  bootstrapServers: 'my-cluster-kafka-bootstrap:9093'
+  image: registry.cn-hangzhou.aliyuncs.com/wiselyman/kafka-connect-sqlserver-postgres:0.1
+  tls:
+    trustedCertificates:
+      - secretName: my-cluster-cluster-ca-cert
+        certificate: ca.crt
