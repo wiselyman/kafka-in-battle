@@ -1,0 +1,16 @@
+{
+  "name": "sql-server-connector",
+  "config": {
+    "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
+    "tasks.max" : "1",
+    "database.server.name" : "bbxx",
+    "database.hostname" : "172.16.8.221 ",
+    "database.port" : "1433",
+    "database.user" : "sa",
+    "database.password" : "sa",
+    "database.dbname" : "bs_portal",
+    "database.history.kafka.bootstrap.servers" : "my-cluster-kafka-bootstrap:9092",
+    "database.history.kafka.topic": "schema-changes.bbxx",
+    "table.whitelist": "dbo.MH_BBXX"
+  }
+}
