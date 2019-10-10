@@ -105,9 +105,24 @@ kubectl exec -n kafka my-cluster-kafka-0   -- bin/kafka-topics.sh --list --zooke
 
   ```dockerfile
   FROM strimzi/kafka-connect:0.14.0-kafka-2.3.0
+  USER root:root
+  COPY ./plugins/ /opt/kafka/plugins/
+  USER 1001
+  MAINTAINER 285414629@qq.com
   ```
 
-  
+- 使用阿里云“容器镜像服务”（[https://cr.console.aliyun.com/](https://cr.console.aliyun.com/)）编译镜像，目前我们的源码地址位于:[https://github.com/wiselyman/kafka-in-battle](https://github.com/wiselyman/kafka-in-battle)。
+
+- “镜像仓库”->“创建镜像仓库”:
+
+  ![](images/aliyun1.png)
+
+  ![](images/aliyun2.png)
+
+- 点击镜像仓库列表中的“kafka-connect-mysql-postgres”->“构建”->“添加规则”：
+
+  ![](images/aliyun3.png)
+
+- 确认后，“构建规则设置”->“立即构建”：
 
   
-
