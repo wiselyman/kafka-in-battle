@@ -4,7 +4,7 @@
 
 - Operator Framework是一个用来管理k8s原生应用（Operator）的开源工具。
 
-- Operator分享地址：https://operatorhub.io/，该网站有安装Operator的具体方法。
+- Operator Framework支持的Operator分享地址：https://operatorhub.io/。
 
 - 如安装Kafka使用**Strimzi Apache Kafka Operator**，地址为：https://operatorhub.io/operator/strimzi-kafka-operator 。
 
