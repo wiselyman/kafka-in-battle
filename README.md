@@ -93,13 +93,17 @@ kubectl exec -n kafka my-cluster-kafka-0   -- bin/kafka-topics.sh --list --zooke
 
 ### 5.1 SQL Server To PosgreSQL
 
-- 下载SQL Server Connector plugin：http://central.maven.org/maven2/io/debezium/debezium-connector-sqlserver/
+- 本节将外部的SQL Server中的数据通过Kafka Connect同步至K8s集群里的PostgreSQL中。
 
-- 下载PostgeSQL plugin：http://central.maven.org/maven2/io/debezium/debezium-connector-postgres/
+- 输入（source）：下载SQL Server Connector plugin：http://central.maven.org/maven2/io/debezium/debezium-connector-sqlserver/
+
+- 输出（sink）：下载Kafka Connect JDBC：https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 
 - 新建Dockerfile文件。
 
-- 解压两个压缩包到Dockerfile相同目录下的plugins目录：`debezium-connector-sqlserver-0.10.0.Final-plugin.zip`、`debezium-connector-postgres-0.10.0.Final-plugin.zip`
+- 将`debezium-connector-sqlserver-0.10.0.Final-plugin.zip`解压放置到Dockerfile相同目录下的`plugins`目录。
+
+- 在`plugins`目录下新建目录`kafka-connect-jdbc`,解压`confluentinc-kafka-connect-jdbc-5.3.1.zip`，将`lib`下的`kafka-connect-jdbc-5.3.1.jar`和`postgresql-9.4.1212.jar`放置在`kafka-connect-jdbc`
 
 - 编写Dockerfile
 
@@ -125,4 +129,79 @@ kubectl exec -n kafka my-cluster-kafka-0   -- bin/kafka-topics.sh --list --zooke
 
 - 确认后，“构建规则设置”->“立即构建”，“构建日志”显示“构建状态”为“成功”即可。
 
+- 编写Kafka Connect集群部署文件`kafka-connect-sql-postgres.yml`：
+
+  ```yaml
+  apiVersion: kafka.strimzi.io/v1beta1
+  kind: KafkaConnect
+  metadata:
+    name: my-connect-cluster
+  spec:
+    version: 2.3.0
+    replicas: 1
+    bootstrapServers: 'my-cluster-kafka-bootstrap:9093'
+    image: registry.cn-hangzhou.aliyuncs.com/wiselyman/kafka-connect-from-sql-to-jdbc:0.1
+    tls:
+      trustedCertificates:
+        - secretName: my-cluster-cluster-ca-cert
+          certificate: ca.crt
+  ```
+
+- 执行安装
+
+  ```shell
+  kubectl apply -f kafka-connect-sql-postgres.yml -n kafka
+  ```
+
+- 查询已安装的插件
+
+  ```shell
+  kubectl exec -i -n kafka my-cluster-kafka-0 -- curl -X GET http://my-connect-cluster-connect-api:8083/connector-plugins
+  ```
+
+  结果如：
+
+  ```
+  [{
+  	"class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+  	"type": "sink",
+  	"version": "5.3.1"
+  }, {
+  	"class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+  	"type": "source",
+  	"version": "5.3.1"
+  }, {
+  	"class": "io.debezium.connector.sqlserver.SqlServerConnector",
+  	"type": "source",
+  	"version": "0.10.0.Final"
+  }, {
+  	"class": "org.apache.kafka.connect.file.FileStreamSinkConnector",
+  	"type": "sink",
+  	"version": "2.3.0"
+  }, {
+  	"class": "org.apache.kafka.connect.file.FileStreamSourceConnector",
+  	"type": "source",
+  	"version": "2.3.0"
+  }]
+  ```
+
+- 使用helm安装PostgreSQL
+
+  定制的`value.yaml`如下：
+
+  ```yaml
+  global.storageClass: standard
+  postgresqlUsername: wisely
+  postgresqlPassword: zzzzzz
+  postgresqlDatabase: center
+  service.type: NodePort
+  ```
+
+  安装:
+
+  ```shell
+  helm install --name my-pg --set global.storageClass=standard,postgresUser=wisely,postgresPassword=zzzzzz,postgresDatabase=center,service.type=NodePort,service.nodePort=5432 stable/postgresql
+  ```
+
   
+
