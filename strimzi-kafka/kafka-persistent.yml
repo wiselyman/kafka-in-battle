@@ -12,6 +12,7 @@ spec:
     config:
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3
+      delete.topic.enable: "true"
       transaction.state.log.min.isr: 2
       log.message.format.version: "2.3"
     storage:
@@ -19,13 +20,13 @@ spec:
       volumes:
       - id: 0
         type: persistent-claim
-        size: 10Gi
+        size: 5Gi
         deleteClaim: false
   zookeeper:
     replicas: 3
     storage:
       type: persistent-claim
-      size: 10Gi
+      size: 5Gi
       deleteClaim: false
   entityOperator:
     topicOperator: {}

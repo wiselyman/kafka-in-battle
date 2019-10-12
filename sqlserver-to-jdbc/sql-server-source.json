@@ -4,13 +4,13 @@
     "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
     "tasks.max" : "1",
     "database.server.name" : "exam",
-    "database.hostname" : "172.16.8.221 ",
+    "database.hostname" : "172.16.8.221",
     "database.port" : "1433",
     "database.user" : "sa",
     "database.password" : "sa",
     "database.dbname" : "bs_portal",
     "database.history.kafka.bootstrap.servers" : "my-cluster-kafka-bootstrap:9092",
-    "database.history.kafka.topic": "schema-changes.yczm",
-    "table.whitelist": "dbo.MH_YCZM"
+    "database.history.kafka.topic": "schema-changes.person",
+    "table.whitelist": "dbo.person"
   }
 }
