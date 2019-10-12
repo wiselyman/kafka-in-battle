@@ -1,5 +1,9 @@
 # 基于K8s、Strimzi的Kafka Connect实战
 
+## 0. 源码地址
+
+[https://github.com/wiselyman/kafka-in-battle](https://github.com/wiselyman/kafka-in-battle)
+
 ## 1. Operator Framework
 
 Operator Framework是一个用来管理k8s原生应用（Operator）的开源工具。
