@@ -1,4 +1,4 @@
-# 基于K8s的Kafka实战
+# 基于K8s、Strimzi的Kafka Connect实战
 
 ## 1. Operator Framework
 
