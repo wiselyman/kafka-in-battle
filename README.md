@@ -1,4 +1,4 @@
-# 基于K8s、Strimzi的Kafka Connect实战
+# 基于K8s、Strimzi的Kafka Connect的数据同步
 
 ## 0. 源码地址
 
@@ -345,7 +345,7 @@ helm install --name my-pg --set global.storageClass=standard,postgresUser=wisely
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
     "tasks.max": "1",
-    "topics": "exam.dbo.MH_YCZM",
+    "topics": "exam.dbo.person",
     "connection.url": "jdbc:postgresql://my-pg-postgresql.default.svc.cluster.local:5432/center?user=wisely&password=zzzzzz",
     "transforms": "unwrap",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
