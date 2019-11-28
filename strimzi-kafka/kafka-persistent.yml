@@ -7,6 +7,9 @@ spec:
     version: 2.3.0
     replicas: 3
     listeners:
+      external:
+        type: nodeport
+        tls: false
       plain: {}
       tls: {}
     config:
@@ -20,13 +23,13 @@ spec:
       volumes:
       - id: 0
         type: persistent-claim
-        size: 5Gi
+        size: 20Gi
         deleteClaim: false
   zookeeper:
     replicas: 3
     storage:
       type: persistent-claim
-      size: 5Gi
+      size: 20Gi
       deleteClaim: false
   entityOperator:
     topicOperator: {}
